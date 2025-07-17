@@ -56,4 +56,11 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    //WorkManager
+    implementation (libs.androidx.work.runtime.ktx)
+    //Service Coroutines
+    implementation (libs.kotlinx.coroutines.android)
+    //Service lifecycle
+    implementation (libs.lifecycle.service)
 }
