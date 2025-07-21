@@ -3,9 +3,7 @@ package com.example.servicetutorial.foreground
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
-import android.util.Log
 import androidx.core.app.NotificationCompat
-import com.example.servicetutorial.foreground.ForegroundServiceManager
 import com.example.servicetutorial.R
 
 class ForegroundServiceExample : Service() {
