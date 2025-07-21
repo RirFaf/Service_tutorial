@@ -12,7 +12,7 @@ class MainApplication : Application() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
-                "channelId",
+                FOREGROUND_CHANNEL_ID,
                 "Sample Channel",
                 NotificationManager.IMPORTANCE_HIGH
             )

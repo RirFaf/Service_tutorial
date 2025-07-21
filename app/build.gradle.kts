@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.ksp)
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -57,10 +59,10 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    //WorkManager
-    implementation (libs.androidx.work.runtime.ktx)
-    //Service Coroutines
-    implementation (libs.kotlinx.coroutines.android)
-    //Service lifecycle
-    implementation (libs.lifecycle.service)
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+
+    implementation (libs.androidx.hilt.lifecycle.viewmodel)
+    implementation (libs.androidx.hilt.work)
+    implementation(libs.hilt.navigation.compose)
 }
