@@ -4,21 +4,31 @@ import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
+import dagger.hilt.android.HiltAndroidApp
 
+@HiltAndroidApp
 class MainApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
+            val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+
+            val foregroundChannel = NotificationChannel(
                 FOREGROUND_CHANNEL_ID,
-                "Sample Channel",
-                NotificationManager.IMPORTANCE_HIGH
+                "Foreground Service Channel",
+                NotificationManager.IMPORTANCE_LOW
             )
 
-            val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
+            val backgroundChannel = NotificationChannel(
+                BACKGROUND_CHANNEL_ID,
+                "Background Service Channel",
+                NotificationManager.IMPORTANCE_LOW
+            )
+
+            notificationManager.createNotificationChannel(foregroundChannel)
+            notificationManager.createNotificationChannel(backgroundChannel)
         }
     }
 }

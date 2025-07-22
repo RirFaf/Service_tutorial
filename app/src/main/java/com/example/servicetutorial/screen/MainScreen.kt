@@ -1,70 +1,62 @@
 package com.example.servicetutorial.screen
 
-import android.content.Intent
-import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Button
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.servicetutorial.foreground.ForegroundServiceExample
+import com.example.servicetutorial.screen.background.BackgroundServiceView
+import com.example.servicetutorial.screen.bound.BoundServiceView
+import com.example.servicetutorial.screen.foreground.ForegroundServiceView
 
 @Composable
 fun MainScreen() {
     val context = LocalContext.current
-    val applicationContext = context.applicationContext
     val viewModel = hiltViewModel<MainScreenViewModel>()
-    val state by viewModel.state.collectAsStateWithLifecycle()
+    val pagerState = rememberPagerState { 3 }
 
-    //todo: Add dialog to ask to enable permissions and disable STOP SERVICE btn until service is started
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Button(
-            enabled = state.hasPermissions,
-            onClick = {
-                viewModel.checkPermissions(
-                    context = context,
-                    onPermissionsGranted = {
-                        Intent(
-                            applicationContext,
-                            ForegroundServiceExample::class.java
-                        ).also {
-                            it.action = ForegroundServiceExample.Actions.START.toString()
-                            context.startService(it)
-                        }
-                    },
-                    onPermissionsDenied = {
-                        Toast.makeText(context, "Permissions denied", Toast.LENGTH_SHORT).show()
-                    }
-                )
-            }
+    Column {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.primaryContainer)
+                .padding(vertical = 8.dp, horizontal = 16.dp),
+            verticalArrangement = Arrangement.Center,
         ) {
-            Text(text = "Start Service")
+            Text(
+                text = "Service Tutorial",
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onPrimaryContainer
+            )
+            Spacer(Modifier.height(8.dp))
+            Text(
+                text = "Swipe to change service type",
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.onPrimaryContainer
+            )
         }
-        Button(
-            onClick = {
-                Intent(
-                    applicationContext,
-                    ForegroundServiceExample::class.java
-                ).also {
-                    it.action = ForegroundServiceExample.Actions.STOP.toString()
-                    context.startService(it)
-                }
-            }
+        HorizontalPager(
+            state = pagerState,
+            modifier = Modifier.fillMaxSize()
         ) {
-            Text(text = "Stop Service")
+            when (it) {
+                0 -> ForegroundServiceView(context, viewModel)
+                1 -> BackgroundServiceView(context, viewModel)
+                2 -> BoundServiceView(context, viewModel)
+            }
         }
     }
 }
+

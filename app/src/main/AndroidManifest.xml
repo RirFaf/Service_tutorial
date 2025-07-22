@@ -27,6 +27,7 @@
             </intent-filter>
         </activity>
         <service android:name=".foreground.ForegroundServiceExample" android:foregroundServiceType="shortService"/>
+        <service android:name=".background.BackgroundServiceExample" />
     </application>
 
 </manifest>

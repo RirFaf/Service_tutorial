@@ -9,12 +9,10 @@ import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 data class MainScreenState(
-    val isLoading: Boolean = true,
-    val hasPermissions: Boolean = false,
+    val permissionsGranted: Boolean = false,
 )
 
 @HiltViewModel
@@ -50,14 +48,10 @@ class MainScreenViewModel @Inject constructor() : ViewModel() {
             ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
         }
 
-        if (permissionResults){
+        if (permissionResults) {
             onPermissionsGranted()
         } else {
             onPermissionsDenied()
-        }
-
-        _state.update {
-            it.copy(isLoading = false, hasPermissions = permissionResults)
         }
     }
 

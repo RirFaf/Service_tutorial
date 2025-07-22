@@ -1,37 +1,60 @@
 package com.example.servicetutorial.foreground
 
+import android.app.NotificationManager
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
+import com.example.servicetutorial.FOREGROUND_CHANNEL_ID
 import com.example.servicetutorial.R
+import javax.inject.Inject
 
-class ForegroundServiceExample : Service() {
+class ForegroundServiceExample @Inject constructor() : Service() {
     private val manager = ForegroundServiceManager()
+    private val notificationBuilder = NotificationCompat.Builder(this, FOREGROUND_CHANNEL_ID)
+        .setOnlyAlertOnce(true)
+        .setSmallIcon(R.drawable.ic_launcher_foreground)
+        .setContentTitle("Sample title")
+        .setContentText("0%")
+        .setProgress(100, 0, false)
 
     override fun onBind(intent: Intent?): IBinder? {
         return null // need to be not null when multiple apps bind to service or when work manager is used
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+
+        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+
         manager.addListeners(
-            onProgress = {
-                val notification = NotificationCompat.Builder(this, "channelId")
-                    .setSmallIcon(R.drawable.ic_launcher_foreground)
-                    .setContentTitle("Sample title")
-                    .setContentText(it.toString())
-                    .build()
-                startForeground(1, notification)
+            onProgress = { progress ->
+                notificationBuilder
+                    .setContentText("background service progress = $progress%")
+                    .setProgress(100, progress, false)
+
+                notificationManager.notify(
+                    FOREGROUND_NOTIFICATION_CHANNEL,
+                    notificationBuilder.build()
+                )
             },
             onComplete = {
                 stopSelf()
             }
         )
+
+        startForeground(FOREGROUND_NOTIFICATION_CHANNEL, notificationBuilder.build())
+
         when (intent?.action) {
             Actions.START.toString() -> start()
-            Actions.STOP.toString() -> stopSelf()
+            Actions.STOP.toString() -> {
+                manager.stopFakeDownload()
+                stopSelf()
+            }
+
+            Actions.PAUSE.toString() -> manager.stopFakeDownload()
         }
-        return super.onStartCommand(intent, flags, startId)
+
+        return START_STICKY
     }
 
     private fun start() {
@@ -39,6 +62,8 @@ class ForegroundServiceExample : Service() {
     }
 
     enum class Actions {
-        START, STOP
+        START, PAUSE, STOP
     }
 }
+
+const val FOREGROUND_NOTIFICATION_CHANNEL = 1

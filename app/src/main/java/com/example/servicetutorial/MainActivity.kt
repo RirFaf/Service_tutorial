@@ -14,7 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.core.app.ActivityCompat
 import com.example.servicetutorial.screen.MainScreen
 import com.example.servicetutorial.ui.theme.ServiceTutorialTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
