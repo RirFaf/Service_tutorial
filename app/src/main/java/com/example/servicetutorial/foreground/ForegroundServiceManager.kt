@@ -3,37 +3,33 @@ package com.example.servicetutorial.foreground
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ForegroundServiceManager {
-    private val _progress = MutableStateFlow(0)
-    val downloadJob = Job() + Dispatchers.IO
-    val scope = CoroutineScope(downloadJob)
+class ForegroundServiceManager @Inject constructor() {
+    private var progress = 0
+    private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+    private var currentJob: Job? = null
 
     var progressListener: (Int) -> Unit = {}
     var stopListener: () -> Unit = {}
 
     fun startFakeDownload() {
-        scope.launch {
-            while (_progress.value < 100) {
+        currentJob?.cancel()
+        currentJob = scope.launch {
+            while (progress < 100) {
                 delay(250)
-                _progress.update { it + 1 }
-                progressListener(_progress.value)
+                progress++
+                progressListener(progress)
             }
             stopListener()
         }
     }
 
     fun stopFakeDownload() {
-        downloadJob.cancel()
-    }
-
-    fun resetFakeDownload() {
-        _progress.update { 0 }
+        currentJob?.cancel()
     }
 
     fun addListeners(
