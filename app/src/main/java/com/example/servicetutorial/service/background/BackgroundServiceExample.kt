@@ -1,4 +1,4 @@
-package com.example.servicetutorial.background
+package com.example.servicetutorial.service.background
 
 import android.app.NotificationManager
 import android.app.Service
@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import com.example.servicetutorial.BACKGROUND_CHANNEL_ID
+import com.example.servicetutorial.BACKGROUND_NOTIFICATION_CHANNEL
 import com.example.servicetutorial.R
 
 class BackgroundServiceExample : Service() {
@@ -97,5 +98,3 @@ class BackgroundServiceExample : Service() {
         STOP_BACKGROUND,
     }
 }
-
-private const val BACKGROUND_NOTIFICATION_CHANNEL = 2
