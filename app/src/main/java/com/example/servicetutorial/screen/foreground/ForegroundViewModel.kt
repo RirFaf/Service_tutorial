@@ -1,4 +1,4 @@
-package com.example.servicetutorial.screen
+package com.example.servicetutorial.screen.foreground
 
 import android.Manifest
 import android.content.Context
@@ -11,13 +11,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
-data class MainScreenState(
+data class ForegroundState(
     val permissionsGranted: Boolean = false,
 )
 
 @HiltViewModel
-class MainScreenViewModel @Inject constructor() : ViewModel() {
-    private val _state = MutableStateFlow(MainScreenState())
+class ForegroundViewModel @Inject constructor() : ViewModel() {
+    private val _state = MutableStateFlow(ForegroundState())
     val state = _state.asStateFlow()
 
     fun checkPermissions(

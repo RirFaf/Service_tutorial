@@ -12,15 +12,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.example.servicetutorial.background.BackgroundServiceExample
-import com.example.servicetutorial.screen.MainScreenViewModel
+import com.example.servicetutorial.service.background.BackgroundServiceExample
 
 @Composable
-fun BackgroundServiceView(
-    context: Context,
-    viewModel: MainScreenViewModel
-) {
+fun BackgroundServiceView() {
+    val context: Context = LocalContext.current
     val backgroundServiceIntent = Intent(context, BackgroundServiceExample::class.java)
     Column(
         modifier = Modifier

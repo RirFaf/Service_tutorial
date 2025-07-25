@@ -14,15 +14,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityCompat
-import com.example.servicetutorial.foreground.ForegroundServiceExample
-import com.example.servicetutorial.screen.MainScreenViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.servicetutorial.service.foreground.ForegroundServiceExample
 
 @Composable
-fun ForegroundServiceView(
-    context: Context,
-    viewModel: MainScreenViewModel
-) {
+fun ForegroundServiceView() {
+    val context: Context = LocalContext.current
+    val viewModel = hiltViewModel<ForegroundViewModel>()
     val applicationContext = context.applicationContext
     val foregroundIntent = Intent(applicationContext, ForegroundServiceExample::class.java)
     Column(

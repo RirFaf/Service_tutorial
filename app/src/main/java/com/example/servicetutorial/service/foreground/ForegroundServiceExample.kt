@@ -1,4 +1,4 @@
-package com.example.servicetutorial.foreground
+package com.example.servicetutorial.service.foreground
 
 import android.app.NotificationManager
 import android.app.Service
@@ -6,11 +6,13 @@ import android.content.Intent
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import com.example.servicetutorial.FOREGROUND_CHANNEL_ID
+import com.example.servicetutorial.FOREGROUND_NOTIFICATION_CHANNEL
 import com.example.servicetutorial.R
+import com.example.servicetutorial.data.DownloadMock
 import javax.inject.Inject
 
 class ForegroundServiceExample @Inject constructor() : Service() {
-    private val manager = ForegroundServiceManager()
+    private val manager = DownloadMock()
     private val notificationBuilder = NotificationCompat.Builder(this, FOREGROUND_CHANNEL_ID)
         .setOnlyAlertOnce(true)
         .setSmallIcon(R.drawable.ic_launcher_foreground)
@@ -65,5 +67,3 @@ class ForegroundServiceExample @Inject constructor() : Service() {
         START, PAUSE, STOP
     }
 }
-
-const val FOREGROUND_NOTIFICATION_CHANNEL = 1

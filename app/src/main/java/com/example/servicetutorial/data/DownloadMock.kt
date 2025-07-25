@@ -1,4 +1,4 @@
-package com.example.servicetutorial.foreground
+package com.example.servicetutorial.data
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -8,7 +8,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class ForegroundServiceManager @Inject constructor() {
+class DownloadMock @Inject constructor() {
     private var progress = 0
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private var currentJob: Job? = null

@@ -4,10 +4,25 @@ import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
+import android.util.Log
+import androidx.hilt.work.HiltWorkerFactory
+import androidx.work.Configuration
 import dagger.hilt.android.HiltAndroidApp
+import javax.inject.Inject
 
 @HiltAndroidApp
-class MainApplication : Application() {
+class MainApplication : Application(), Configuration.Provider {
+    @Inject
+    lateinit var workerFactory: HiltWorkerFactory
+
+    override val workManagerConfiguration: Configuration
+        get() {
+            return Configuration.Builder()
+                .setWorkerFactory(workerFactory)
+                .setMinimumLoggingLevel(Log.VERBOSE)
+                .build()
+        }
+
     override fun onCreate() {
         super.onCreate()
 
@@ -27,8 +42,15 @@ class MainApplication : Application() {
                 NotificationManager.IMPORTANCE_LOW
             )
 
+            val workerChannel = NotificationChannel(
+                WORKER_CHANNEL_ID,
+                "Worker Channel",
+                NotificationManager.IMPORTANCE_LOW
+            )
+
             notificationManager.createNotificationChannel(foregroundChannel)
             notificationManager.createNotificationChannel(backgroundChannel)
+            notificationManager.createNotificationChannel(workerChannel)
         }
     }
 }

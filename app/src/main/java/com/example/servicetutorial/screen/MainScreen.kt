@@ -14,18 +14,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.servicetutorial.screen.background.BackgroundServiceView
 import com.example.servicetutorial.screen.bound.BoundServiceView
 import com.example.servicetutorial.screen.foreground.ForegroundServiceView
+import com.example.servicetutorial.screen.worker.WorkerView
 
 @Composable
 fun MainScreen() {
-    val context = LocalContext.current
-    val viewModel = hiltViewModel<MainScreenViewModel>()
-    val pagerState = rememberPagerState { 3 }
+    val pagerState = rememberPagerState { 4 }
 
     Column {
         Column(
@@ -52,9 +49,10 @@ fun MainScreen() {
             modifier = Modifier.fillMaxSize()
         ) {
             when (it) {
-                0 -> ForegroundServiceView(context, viewModel)
-                1 -> BackgroundServiceView(context, viewModel)
-                2 -> BoundServiceView(context, viewModel)
+                0 -> ForegroundServiceView()
+                1 -> BackgroundServiceView()
+                2 -> BoundServiceView()
+                3 -> WorkerView()
             }
         }
     }
