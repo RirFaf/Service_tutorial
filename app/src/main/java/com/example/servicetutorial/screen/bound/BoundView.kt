@@ -15,6 +15,6 @@ fun BoundServiceView() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(text = "Bound Service not implemented yet")
+        Text(text = "This is bound service server.\nMessages will be shown as TOAST")
     }
 }
